@@ -36,6 +36,13 @@ def get_album(id):
     album = repository.find(id)
     return str(album)
 
+@app.route('/albums/<int:id>', methods=['DELETE'])
+def delete_album(id):
+    connection = get_flask_database_connection(app)
+    repository = AlbumRepository(connection)
+    repository.delete(id)
+    return "Album deleted successfully"
+
 @app.route('/artists', methods = ['GET'])
 def get_artists():
     connection = get_flask_database_connection(app)
@@ -63,29 +70,6 @@ def create_artist():
 def get_emoji():
     return ":)"
 
-
-
-
-# # DELETE /albums/<id>
-# # Deletes a album
-# # Try it:
-# #   ; curl -X DELETE http://localhost:5001/albums/1
-# @app.route('/albums/<int:id>', methods=['DELETE'])
-# def delete_album(id):
-#     connection = get_flask_database_connection(app)
-#     repository = AlbumRepository(connection)
-#     repository.delete(id)
-#     return "Album deleted successfully"
-
-
-# @app.route('/artists', methods = ['GET'])
-# def get_artists():
-#     connection = get_flask_database_connection(app)
-#     repository = ArtistRepository(connection)
-#     return "\n".join([
-#         str(artist) for artist in repository.all()
-#     ])
-
 # @app.route('/artists', methods = ['POST'])
 # def create_artist():
 #     if ('name' not in request.form) or ('genre' not in request.form):
@@ -100,8 +84,6 @@ def get_emoji():
 #     artist = Artist(None, request.form['name'], request.form['genre'])
 #     repository.create(artist)
 #     return "Artists added successfully"
-
-
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.
